@@ -1,21 +1,17 @@
 import React from "react";
-import styled from "styled-components";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductsPage from "./routes/ProductsPage";
 import SignInPage from "./routes/SignInPage";
 
-const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1;
-`;
-
 function App() {
   return (
-    <Root className="App">
-      <ProductsPage />
-      {/* <SignInPage /> */}
-    </Root>
+    <Router>
+      <Routes>
+        <Route path="/" element={<SignInPage />} />
+        <Route path="products" element={<ProductsPage />} />
+        {/* <Route path="checkout" element={<CheckoutPage />} /> */}
+      </Routes>
+    </Router>
   );
 }
 

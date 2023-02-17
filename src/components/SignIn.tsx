@@ -25,6 +25,7 @@ const Container = styled.div`
   justify-content: center;
   padding: 0px 20px 20px 20px;
 `;
+
 const Title = styled.body`
   font-size: 40px;
   font-weight: 600;

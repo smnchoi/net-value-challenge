@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Root = styled.div`
   display: flex;
@@ -40,7 +41,9 @@ const CartHeader: FC<CartHeaderProps> = ({ addedInCart }) => {
   return (
     <Root>
       <SelectedCount>{`${addedInCart.length} added to Cart`}</SelectedCount>
-      <Checkout onClick={goToCheckout}>Checkout the cart</Checkout>
+      <Checkout onClick={goToCheckout}>
+        <Link to="../checkout">Checkout the cart</Link>
+      </Checkout>
     </Root>
   );
 };
