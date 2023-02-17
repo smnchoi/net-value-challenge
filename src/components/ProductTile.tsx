@@ -5,8 +5,9 @@ import { IProduct } from "../utils/parser";
 const Root = styled.a<{ isSelected: boolean }>`
   display: flex;
   flex-direction: column;
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  min-width: 300px;
+  height: 300px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -21,9 +22,9 @@ const Root = styled.a<{ isSelected: boolean }>`
 `;
 
 const Image = styled.img`
-  display: block;
+  display: flex;
   width: 100%;
-  height: 200px;
+  height: 160px;
   object-fit: cover;
 `;
 
@@ -34,23 +35,30 @@ const InfoContainer = styled.div`
   height: 100%;
 `;
 
-const Sku = styled.div`
+const Sku = styled.p`
   font-size: 14px;
   color: #9b9b9b;
 `;
 
-const Name = styled.div`
+const Ellipsis = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const Name = styled(Ellipsis)`
   font-size: 18px;
   font-weight: 700;
   margin: 5px 0;
 `;
 
-const Description = styled.div`
+const Description = styled(Ellipsis)`
   font-size: 14px;
   margin-bottom: 10px;
+  display: block;
 `;
 
-const Price = styled.div`
+const Price = styled(Ellipsis)`
   font-size: 30px;
   font-weight: 700;
   color: #b12704;
