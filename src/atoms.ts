@@ -38,3 +38,9 @@ export const checkoutsAtom = atom<ICheckout[]>({
   key: "checkoutsAtom", // unique ID (with respect to other atoms/selectors)
   default: [], // default value (aka initial value)
 });
+
+//* Store all users customer and admin
+export const usersAtom = atom<IUser[]>({
+  key: "usersAtom", // unique ID (with respect to other atoms/selectors)
+  default: [], // default value (aka initial value)
+});

@@ -41,11 +41,6 @@ const SignInPage: FC = () => {
     //
   };
 
-  //! TODO: create user and store at Recoil state
-  const handleSignUp = (username: string, password: string, role: Role) => {
-    //
-  };
-
   return (
     <Root>
       {isSignIn ? (
@@ -63,7 +58,7 @@ const SignInPage: FC = () => {
           </Text>
         </>
       ) : (
-        <SignUp handleSignUp={handleSignUp} />
+        <SignUp setIsSignIn={setIsSignIn} />
       )}
     </Root>
   );

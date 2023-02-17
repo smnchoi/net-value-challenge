@@ -1,5 +1,8 @@
 import React, { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { usersAtom } from "../atoms";
 import { Role } from "../utils/constant";
 import { validatePassword, validateUsername } from "../utils/validator";
 
@@ -68,7 +71,7 @@ const Box = styled.button<{ isSelected: boolean }>`
   width: 200px;
   height: 80px;
   background-color: ${({ isSelected }) =>
-    isSelected ? "#ff0000" : " #cacaca"};
+    isSelected ? "#ff0000" : " #e8e8e8"};
   border-radius: 10px;
   border: none;
 
@@ -101,62 +104,112 @@ const SubmitButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.p<{ errorMessage: string }>`
+const GoToSignInButton = styled(SubmitButton)`
+  background-color: #000000;
+
+  &:hover {
+    background-color: #565656;
+  }
+`;
+
+const ErrorMessage = styled.p`
   color: #d81e05;
-  color: ${({ errorMessage }) => (errorMessage ? "#d81e05" : "white")};
   margin-bottom: 20px;
 `;
 
 interface SignInProps {
-  handleSignUp: (username: string, password: string, role: Role) => void;
+  setIsSignIn: (signIn: boolean) => void;
 }
 
-const SignUp: FC<SignInProps> = ({ handleSignUp }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+type FormData = {
+  username: string;
+  password: string;
+};
+
+const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
   const [role, setRole] = useState<Role>("Customer");
+  const [users, setUser] = useRecoilState(usersAtom);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isDirty, isSubmitting },
+  } = useForm<FormData>();
 
-    const isValidUsername = validateUsername(username);
-    if (!isValidUsername) {
-      setErrorMessage(
-        "Please use only lowercase letters and numbers for username"
-      );
+  const handleSignUp = async (usernameNpassword: FormData) => {
+    await new Promise((r) => setTimeout(r, 1000));
+
+    console.log("data", usernameNpassword);
+
+    const { username, password } = usernameNpassword;
+
+    const alreadyExisted = users
+      .map((user) => user.username)
+      .includes(username);
+
+    if (alreadyExisted) {
+      alert("User already exists");
+      setValue("username", "");
+      setValue("password", "");
       return;
     }
 
-    const isValidPassword = validatePassword(password);
-    if (!isValidPassword) {
-      setErrorMessage("Please use at least 6 characters for password");
-      return;
-    }
+    alert("User is created! Please Sign-In");
 
-    handleSignUp(username, password, role);
+    //* create user and store at Recoil state
+    setUser((otherUsers) => [
+      ...otherUsers,
+      {
+        username,
+        password,
+        role,
+      },
+    ]);
+    setIsSignIn(true);
+
+    console.log("users", users);
   };
 
   return (
     <Root>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(handleSignUp)}>
         <Container>
           <Title>Sign Up</Title>
-          <ErrorMessage errorMessage={errorMessage}>
-            {errorMessage || "_"}
+          <ErrorMessage>
+            {errors.username && errors.username.message}
+            <br />
+            {errors.password && errors.password.message}
           </ErrorMessage>
           <Input
             type="text"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            aria-invalid={
+              !isDirty ? undefined : errors.username ? "true" : "false"
+            }
+            {...register("username", {
+              required: "Username is required",
+              pattern: {
+                value: /^[a-z0-9]+$/,
+                message:
+                  "Please use only lowercase letters and numbers for username.",
+              },
+            })}
           />
           <Input
             style={{ marginTop: 10 }}
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            aria-invalid={
+              !isDirty ? undefined : errors.password ? "true" : "false"
+            }
+            {...register("password", {
+              required: "password is required",
+              minLength: {
+                value: 6,
+                message: "Please use at least 6 characters for password.",
+              },
+            })}
           />
 
           <Detail>Select the role</Detail>
@@ -179,7 +232,18 @@ const SignUp: FC<SignInProps> = ({ handleSignUp }) => {
             </Box>
           </Row>
 
-          <SubmitButton type="submit">Sign Up</SubmitButton>
+          <SubmitButton type="submit" disabled={isSubmitting}>
+            Sign Up
+          </SubmitButton>
+          <GoToSignInButton
+            type="submit"
+            disabled={isSubmitting}
+            onClick={() => {
+              setIsSignIn(true);
+            }}
+          >
+            Go to Sign-In
+          </GoToSignInButton>
         </Container>
       </Form>
     </Root>
