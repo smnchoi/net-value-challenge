@@ -30,7 +30,7 @@ const Container = styled.div`
   padding: 0px 20px 20px 20px;
 `;
 
-const Title = styled.body`
+const Title = styled.p`
   font-size: 40px;
   font-weight: 600;
   text-align: center;
@@ -38,7 +38,7 @@ const Title = styled.body`
   padding-bottom: 30px;
 `;
 
-const Detail = styled.body`
+const Detail = styled.p`
   text-align: left;
   margin-top: 26px;
   margin-left: 10px;
@@ -80,7 +80,7 @@ const Box = styled.button<{ isSelected: boolean }>`
       isSelected ? "#9d0303" : " #9c9a9a"};
   }
 
-  body {
+  p {
     font-size: 20px;
     font-weight: 600;
     color: #000000;
@@ -204,7 +204,7 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
               !isDirty ? undefined : errors.password ? "true" : "false"
             }
             {...register("password", {
-              required: "password is required",
+              required: "Password is required",
               minLength: {
                 value: 6,
                 message: "Please use at least 6 characters for password.",
@@ -220,7 +220,7 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
               }}
               isSelected={role === "Admin"}
             >
-              <body>Admin</body>
+              <p>Admin</p>
             </Box>
             <Box
               onClick={() => {
@@ -228,12 +228,12 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
               }}
               isSelected={role === "Customer"}
             >
-              <body>Customer</body>
+              <p>Customer</p>
             </Box>
           </Row>
 
           <SubmitButton type="submit" disabled={isSubmitting}>
-            Sign Up
+            Confirm Sign Up
           </SubmitButton>
           <GoToSignInButton
             type="submit"

@@ -41,7 +41,7 @@ const ProductsPage: FC = () => {
     <Root>
       <CartHeader addedInCart={addedInCart} />
       <ProductsGrid>
-        {products.map((item) => (
+        {products.map((item, index) => (
           <ProductTile
             image={item.image}
             SKU={item.SKU}
@@ -50,6 +50,7 @@ const ProductsPage: FC = () => {
             price={item.price}
             addedInCart={addedInCart}
             setAddedInCart={setAddedInCart}
+            key={index}
           />
         ))}
       </ProductsGrid>

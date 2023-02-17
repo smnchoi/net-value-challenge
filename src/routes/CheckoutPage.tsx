@@ -13,7 +13,7 @@ const Root = styled.div`
   background-color: white;
 `;
 
-const Title = styled.body`
+const Title = styled.p`
   font-size: 40px;
   font-weight: 600;
   text-align: center;
@@ -107,7 +107,7 @@ const CheckoutPage: FC = () => {
 
       {!isEmpty &&
         addedInCart &&
-        addedInCart.map((item) => (
+        addedInCart.map((item, index) => (
           <ProductListItem
             image={item.image}
             SKU={item.SKU}
@@ -116,6 +116,7 @@ const CheckoutPage: FC = () => {
             price={item.price}
             addedInCart={addedInCart}
             setSelectedProductsAtom={setSelectedProductsAtom}
+            key={index}
           />
         ))}
 

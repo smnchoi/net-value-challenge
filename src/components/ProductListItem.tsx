@@ -74,7 +74,7 @@ const Xbutton = styled.a`
   justify-content: center;
   align-items: center;
 
-  body {
+  p {
     font-size: 30px;
     color: white;
     border-radius: 50px;
@@ -116,7 +116,7 @@ const ProductListItem: FC<ProductListItemProps> = ({
           ]); //* Remove item
         }}
       >
-        <body>❌</body>
+        <p>❌</p>
       </Xbutton>
     </Root>
   );

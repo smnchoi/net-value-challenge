@@ -26,7 +26,7 @@ const Container = styled.div`
   padding: 0px 20px 20px 20px;
 `;
 
-const Title = styled.body`
+const Title = styled.p`
   font-size: 40px;
   font-weight: 600;
   text-align: center;
