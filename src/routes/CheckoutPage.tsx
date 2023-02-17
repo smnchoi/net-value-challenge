@@ -1,7 +1,9 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
+import { Link } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { checkoutsAtom, selctedProductsAtom } from "../atoms";
 import ProductListItem from "../components/ProductListItem";
-import { Product, productsParser } from "../utils/parser";
 
 const Root = styled.div`
   display: flex;
@@ -51,48 +53,50 @@ const SubmitButton = styled.button`
 `;
 
 const CheckoutPage: FC = () => {
-  const [products, setProducts] = useState<Product[] | null>(null);
-  const [addedInCart, removeFromCart] = useState<string[]>([]);
-
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const [addedInCart, setSelectedProductsAtom] =
+    useRecoilState(selctedProductsAtom);
+  const setCheckout = useSetRecoilState(checkoutsAtom);
 
-  const fetchProducts = async () => {
-    const response = await fetch("https://dummyjson.com/products");
-    const { products } = await response.json();
-    const parsedProducts = productsParser(products);
-    setProducts(parsedProducts);
-  };
+  const isEmpty = !addedInCart?.length;
+
+  const totalPrice = isEmpty
+    ? 0
+    : addedInCart.map((item) => item.price).reduce((a, b) => a + b);
+
+  const totalPriceString = totalPrice.toLocaleString("en-US", {
+    style: "currency",
+    currency: "NZD",
+  });
 
   const handleCheckout = () => {
-    //
+    //! TODO: Validating inputs
+
+    //* Add checkout
+    setCheckout((otherCheckouts) => [
+      ...otherCheckouts,
+      {
+        selectedProducts: addedInCart,
+        customerInfo: {
+          firstname,
+          lastname,
+          email,
+          username: "username",
+        },
+        totalPrice,
+      },
+    ]);
+
     alert(
-      "Products are checked out! You can see the information, if you are an andmin 🚀"
+      "Products are checked out! You can see the information, if you are an Admin 🚀"
     );
+
+    //* Reset selectedProducts
+    setSelectedProductsAtom([]);
   };
-
-  if (!products)
-    return (
-      <Root>
-        <h1 style={{ alignSelf: "center", marginTop: 100 }}>
-          Loading products...
-        </h1>
-      </Root>
-    );
-
-  const totalPrice = products
-    .map((item) => item.price)
-    .reduce((a, b) => a + b)
-    .toLocaleString("en-US", {
-      style: "currency",
-      currency: "NZD",
-    });
-  const isEmpty = !products?.length;
 
   return (
     <Root>
@@ -101,8 +105,8 @@ const CheckoutPage: FC = () => {
       </Title>
 
       {!isEmpty &&
-        products &&
-        products.map((item) => (
+        addedInCart &&
+        addedInCart.map((item) => (
           <ProductListItem
             image={item.image}
             SKU={item.SKU}
@@ -110,7 +114,7 @@ const CheckoutPage: FC = () => {
             description={item.description}
             price={item.price}
             addedInCart={addedInCart}
-            removeFromCart={removeFromCart}
+            setSelectedProductsAtom={setSelectedProductsAtom}
           />
         ))}
 

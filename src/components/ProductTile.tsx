@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { Product } from "../utils/parser";
+import { IProduct } from "../utils/parser";
 
 const Root = styled.a<{ isSelected: boolean }>`
   display: flex;
@@ -57,9 +57,9 @@ const Price = styled.div`
   margin-top: auto;
 `;
 
-interface ProductTileProps extends Product {
-  addedInCart: string[];
-  setAddedInCart: (SKU: string[]) => void;
+interface ProductTileProps extends IProduct {
+  addedInCart: IProduct[];
+  setAddedInCart: (item: IProduct[]) => void;
 }
 
 const ProductTile: FC<ProductTileProps> = ({
@@ -71,14 +71,25 @@ const ProductTile: FC<ProductTileProps> = ({
   addedInCart,
   setAddedInCart,
 }) => {
-  const isAddedInCart = addedInCart.includes(SKU);
+  const isAddedInCart = addedInCart.map((product) => product.SKU).includes(SKU);
   return (
     <Root
       isSelected={isAddedInCart}
       onClick={() => {
         isAddedInCart
-          ? setAddedInCart([...addedInCart.filter((sku) => sku !== SKU)]) //* Remove item
-          : setAddedInCart([...addedInCart, SKU]); //* Add item
+          ? setAddedInCart([
+              ...addedInCart.filter((product) => product.SKU !== SKU),
+            ]) //* Remove item
+          : setAddedInCart([
+              ...addedInCart,
+              {
+                image,
+                SKU,
+                name,
+                description,
+                price,
+              },
+            ]); //* Add item
       }}
     >
       <Image src={image} alt={name} />

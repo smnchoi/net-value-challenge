@@ -6,7 +6,7 @@ interface Source {
   images: string[];
 }
 
-export interface Product {
+export interface IProduct {
   SKU: string;
   name: string;
   description: string;
@@ -15,7 +15,7 @@ export interface Product {
 }
 
 export const productsParser = (products: Source[]) => {
-  const parsed: Product[] = products.map((item) => ({
+  const parsed: IProduct[] = products.map((item) => ({
     SKU: `SKU-${item.id}`,
     name: item.title,
     description: item.description,

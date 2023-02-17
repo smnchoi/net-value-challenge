@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { Product } from "../utils/parser";
+import { IProduct } from "../utils/parser";
 
 const Root = styled.div`
   display: flex;
@@ -85,9 +85,9 @@ const Xbutton = styled.a`
   }
 `;
 
-interface ProductListItemProps extends Product {
-  addedInCart: string[];
-  removeFromCart: (SKU: string[]) => void;
+interface ProductListItemProps extends IProduct {
+  addedInCart: IProduct[];
+  setSelectedProductsAtom: (item: IProduct[]) => void;
 }
 
 const ProductListItem: FC<ProductListItemProps> = ({
@@ -97,10 +97,8 @@ const ProductListItem: FC<ProductListItemProps> = ({
   description,
   price,
   addedInCart,
-  removeFromCart,
+  setSelectedProductsAtom,
 }) => {
-  console.log("addedInCart", addedInCart);
-
   return (
     <Root>
       <Image src={image} alt={name} />
@@ -113,7 +111,9 @@ const ProductListItem: FC<ProductListItemProps> = ({
       <Xbutton
         onClick={() => {
           // alert("Remove?");
-          removeFromCart([...addedInCart.filter((sku) => sku !== SKU)]); //* Remove item
+          setSelectedProductsAtom([
+            ...addedInCart.filter((product) => product.SKU !== SKU),
+          ]); //* Remove item
         }}
       >
         <body>❌</body>

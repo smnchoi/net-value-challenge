@@ -1,8 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { productsAtom, selctedProductsAtom } from "../atoms";
 import CartHeader from "../components/CartHeader";
 import ProductTile from "../components/ProductTile";
-import { Product, productsParser } from "../utils/parser";
+import { IProduct, productsParser } from "../utils/parser";
 
 const Root = styled.div`
   display: flex;
@@ -23,22 +25,10 @@ const ProductsGrid = styled.div`
 `;
 
 const ProductsPage: FC = () => {
-  const [products, setProducts] = useState<Product[] | null>(null);
-  const [addedInCart, setAddedInCart] = useState<string[]>([]);
-  // console.log("addedInCart", addedInCart);
+  const products = useRecoilValue(productsAtom);
+  const [addedInCart, setAddedInCart] = useRecoilState(selctedProductsAtom);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    const response = await fetch("https://dummyjson.com/products");
-    const { products } = await response.json();
-    const parsedProducts = productsParser(products);
-    setProducts(parsedProducts);
-  };
-
-  if (!products)
+  if (!products.length)
     return (
       <Root>
         <h1 style={{ alignSelf: "center", marginTop: 100 }}>
