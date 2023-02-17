@@ -35,12 +35,13 @@ const Input = styled.input`
   }
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(Link)`
   background-color: #ff0000;
   border: none;
   color: #fff;
-  padding: 14px;
-  font-size: 16px;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
   border-radius: 4px;
   width: 100%;
   margin-top: 20px;
@@ -138,8 +139,8 @@ const CheckoutPage: FC = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      <SubmitButton type="submit" onClick={handleCheckout}>
-        Check Out Now! {totalPrice}
+      <SubmitButton to="../products" onClick={handleCheckout}>
+        Check Out Now! {totalPriceString}
       </SubmitButton>
     </Root>
   );

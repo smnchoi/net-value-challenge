@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { IProduct } from "../utils/parser";
 
 const Root = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const Root = styled.div`
   background-color: red;
 `;
 
-const Checkout = styled.a`
+const Checkout = styled(Link)`
   font-size: 2rem;
   font-weight: 900;
   color: white;
@@ -30,7 +31,7 @@ const SelectedCount = styled.p`
 `;
 
 type CartHeaderProps = {
-  addedInCart: string[];
+  addedInCart: IProduct[];
 };
 
 const CartHeader: FC<CartHeaderProps> = ({ addedInCart }) => {
@@ -41,8 +42,8 @@ const CartHeader: FC<CartHeaderProps> = ({ addedInCart }) => {
   return (
     <Root>
       <SelectedCount>{`${addedInCart.length} added to Cart`}</SelectedCount>
-      <Checkout onClick={goToCheckout}>
-        <Link to="../checkout">Checkout the cart</Link>
+      <Checkout to="../checkout" onClick={goToCheckout}>
+        Checkout the cart
       </Checkout>
     </Root>
   );
