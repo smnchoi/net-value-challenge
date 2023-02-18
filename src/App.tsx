@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { productsAtom } from "./atoms";
 import AdminPage from "./routes/AdminPage";
 import CheckoutPage from "./routes/CheckoutPage";
@@ -9,10 +9,13 @@ import SignInPage from "./routes/SignInPage";
 import { productsParser } from "./utils/parser";
 
 function App() {
-  const setProducts = useSetRecoilState(productsAtom);
+  const [products, setProducts] = useRecoilState(productsAtom);
 
   useEffect(() => {
-    fetchProducts();
+    //* Fetch data only at the initial
+    if (!products.length) {
+      fetchProducts();
+    }
   }, []);
 
   const fetchProducts = async () => {
