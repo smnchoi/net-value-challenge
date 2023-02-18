@@ -1,11 +1,14 @@
 import { atom, selector } from "recoil";
 import { Role } from "./utils/constant";
 import { IProduct } from "./utils/parser";
+import { recoilPersist } from "recoil-persist";
+const { persistAtom } = recoilPersist();
 
 //* Store all products
 export const productsAtom = atom<IProduct[]>({
   key: "productsAtom", // unique ID (with respect to other atoms/selectors)
   default: [], // default value (aka initial value)
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const sortedBySKU = selector({
@@ -52,10 +55,12 @@ interface ICheckout {
 export const checkoutsAtom = atom<ICheckout[]>({
   key: "checkoutsAtom", // unique ID (with respect to other atoms/selectors)
   default: [], // default value (aka initial value)
+  effects_UNSTABLE: [persistAtom],
 });
 
 //* Store all users customer and admin
 export const usersAtom = atom<IUser[]>({
   key: "usersAtom", // unique ID (with respect to other atoms/selectors)
   default: [], // default value (aka initial value)
+  effects_UNSTABLE: [persistAtom],
 });
