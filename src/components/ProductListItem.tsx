@@ -99,6 +99,11 @@ const ProductListItem: FC<ProductListItemProps> = ({
   addedInCart,
   setSelectedProductsAtom,
 }) => {
+  const priceString = price.toLocaleString("en-US", {
+    style: "currency",
+    currency: "NZD",
+  });
+
   return (
     <Root>
       <Image src={image} alt={name} />
@@ -106,8 +111,9 @@ const ProductListItem: FC<ProductListItemProps> = ({
         <Sku>{SKU}</Sku>
         <Name>{name}</Name>
         <Description>{description}</Description>
-        <Price>${price}</Price>
+        <Price>{priceString}</Price>
       </InfoContainer>
+      {/* //* Customer */}
       <Xbutton
         onClick={() => {
           // alert("Remove?");

@@ -43,11 +43,7 @@ const ProductsPage: FC = () => {
       <ProductsGrid>
         {products.map((item, index) => (
           <ProductTile
-            image={item.image}
-            SKU={item.SKU}
-            name={item.name}
-            description={item.description}
-            price={item.price}
+            {...item}
             addedInCart={addedInCart}
             setAddedInCart={setAddedInCart}
             key={index}

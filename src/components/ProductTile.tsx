@@ -80,6 +80,12 @@ const ProductTile: FC<ProductTileProps> = ({
   setAddedInCart,
 }) => {
   const isAddedInCart = addedInCart.map((product) => product.SKU).includes(SKU);
+
+  const priceString = price.toLocaleString("en-US", {
+    style: "currency",
+    currency: "NZD",
+  });
+
   return (
     <Root
       isSelected={isAddedInCart}
@@ -105,7 +111,7 @@ const ProductTile: FC<ProductTileProps> = ({
         <Sku>{SKU}</Sku>
         <Name>{name}</Name>
         <Description>{description}</Description>
-        <Price>${price}</Price>
+        <Price>{priceString}</Price>
       </InfoContainer>
     </Root>
   );

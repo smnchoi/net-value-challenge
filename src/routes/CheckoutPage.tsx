@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { checkoutsAtom, selctedProductsAtom } from "../atoms";
 import ProductListItem from "../components/ProductListItem";
@@ -61,6 +61,8 @@ const CheckoutPage: FC = () => {
   const [addedInCart, setSelectedProductsAtom] =
     useRecoilState(selctedProductsAtom);
   const setCheckout = useSetRecoilState(checkoutsAtom);
+  const carts = useRecoilValue(checkoutsAtom);
+  console.log("carts", carts);
 
   const isEmpty = !addedInCart?.length;
 
@@ -109,11 +111,7 @@ const CheckoutPage: FC = () => {
         addedInCart &&
         addedInCart.map((item, index) => (
           <ProductListItem
-            image={item.image}
-            SKU={item.SKU}
-            name={item.name}
-            description={item.description}
-            price={item.price}
+            {...item}
             addedInCart={addedInCart}
             setSelectedProductsAtom={setSelectedProductsAtom}
             key={index}
