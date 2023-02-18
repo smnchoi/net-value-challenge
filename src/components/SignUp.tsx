@@ -113,8 +113,14 @@ const GoToSignInButton = styled(SubmitButton)`
 `;
 
 const ErrorMessage = styled.p`
-  color: #d81e05;
+  margin-top: 60px;
   margin-bottom: 20px;
+
+  p {
+    color: #d81e05;
+    font-size: 40px;
+    text-align: left;
+  }
 `;
 
 interface SignInProps {

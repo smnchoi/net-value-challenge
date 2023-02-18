@@ -30,6 +30,10 @@ const SingOut = styled(Link)`
   }
 `;
 
+const GoToAdmin = styled(SingOut)`
+  /*  */
+`;
+
 type HeaderProps = {};
 
 const Header: FC<HeaderProps> = () => {
@@ -58,6 +62,10 @@ const Header: FC<HeaderProps> = () => {
             : "Welcome to Nowherehouse"
         }
       />
+      {role === "Admin" && (
+        <GoToAdmin children="Go To Admin Page" to="../admin" />
+      )}
+
       {isAuthenticated && (
         <SingOut children="Sign Out" to="../" onClick={handleSignOut} />
       )}
