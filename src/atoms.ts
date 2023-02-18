@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import { Role } from "./utils/constant";
 import { IProduct } from "./utils/parser";
 
@@ -6,6 +6,21 @@ import { IProduct } from "./utils/parser";
 export const productsAtom = atom<IProduct[]>({
   key: "productsAtom", // unique ID (with respect to other atoms/selectors)
   default: [], // default value (aka initial value)
+});
+
+export const sortedBySKU = selector({
+  key: "sortedBySKU",
+  get: ({ get }) => {
+    const products = get(productsAtom);
+    const sorted = [...products].sort((a, b) => {
+      const skuNumberA = +a.SKU.split("-")[1];
+      const skuNumberB = +b.SKU.split("-")[1];
+
+      return skuNumberA - skuNumberB;
+    });
+
+    return sorted;
+  },
 });
 
 //* Store products that are selected by a user
