@@ -9,7 +9,6 @@ const Root = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  margin-bottom: 30px;
   background-color: red;
 `;
 
@@ -17,7 +16,6 @@ const Title = styled.div`
   font-size: 1.5rem;
   font-weight: 900;
   color: white;
-  padding: 20px;
 `;
 
 const SingOut = styled(Link)`
@@ -39,11 +37,6 @@ const Header: FC<HeaderProps> = () => {
   const { isAuthenticated, user } = auth;
   const role = user?.role;
   const username = user?.username;
-
-  const goToCheckout = () => {
-    console.log("D");
-    //
-  };
 
   const handleSignOut = () => {
     if (!window.confirm("Do you want to sign out?")) {

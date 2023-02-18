@@ -7,9 +7,10 @@ const Root = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px 20px 10px 20px;
+  margin-top: 20px;
   margin-bottom: 30px;
-  background-color: red;
+  background-color: black;
 `;
 
 const Checkout = styled(Link)`
@@ -19,7 +20,8 @@ const Checkout = styled(Link)`
   padding: 20px;
 
   &:hover {
-    background-color: #880000a7;
+    color: black;
+    background-color: white;
     border-radius: 20px;
   }
 `;
@@ -41,9 +43,9 @@ const CartHeader: FC<CartHeaderProps> = ({ addedInCart }) => {
 
   return (
     <Root>
-      <SelectedCount>{`${addedInCart.length} added to Cart`}</SelectedCount>
+      <SelectedCount>{`Cart (+${addedInCart.length} 🎁)`}</SelectedCount>
       <Checkout to="../checkout" onClick={goToCheckout}>
-        Checkout the cart
+        Checkout the Cart 🛒
       </Checkout>
     </Root>
   );
