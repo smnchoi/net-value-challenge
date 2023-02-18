@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { usersAtom } from "../atoms";
+import { authAtom, usersAtom } from "../atoms";
 import { Role } from "../utils/constant";
 import { validatePassword, validateUsername } from "../utils/validator";
 
@@ -129,6 +129,8 @@ type FormData = {
 const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
   const [role, setRole] = useState<Role>("Customer");
   const [users, setUser] = useRecoilState(usersAtom);
+  const [auth, setAuth] = useRecoilState(authAtom);
+  console.log("auth", auth);
 
   const {
     register,
@@ -137,12 +139,12 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
     formState: { errors, isDirty, isSubmitting },
   } = useForm<FormData>();
 
-  const handleSignUp = async (usernameNpassword: FormData) => {
+  const handleSignUp = async (data: FormData) => {
     await new Promise((r) => setTimeout(r, 1000));
 
-    console.log("data", usernameNpassword);
+    console.log("data", data);
 
-    const { username, password } = usernameNpassword;
+    const { username, password } = data;
 
     const alreadyExisted = users
       .map((user) => user.username)
@@ -155,7 +157,7 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
       return;
     }
 
-    alert("User is created! Please Sign-In");
+    window.alert("User is created! Please Sign-In");
 
     //* create user and store at Recoil state
     setUser((otherUsers) => [
@@ -166,6 +168,16 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
         role,
       },
     ]);
+
+    setAuth({
+      isAuthenticated: true,
+      user: {
+        username,
+        password,
+        role,
+      },
+    });
+
     setIsSignIn(true);
 
     console.log("users", users);
@@ -215,6 +227,7 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
           <Detail>Select the role</Detail>
           <Row style={{ marginTop: 20 }}>
             <Box
+              type="button"
               onClick={() => {
                 setRole("Admin");
               }}
@@ -223,6 +236,7 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
               <p>Admin</p>
             </Box>
             <Box
+              type="button"
               onClick={() => {
                 setRole("Customer");
               }}
