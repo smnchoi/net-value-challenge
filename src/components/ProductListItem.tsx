@@ -86,8 +86,9 @@ const Xbutton = styled.a`
 `;
 
 interface ProductListItemProps extends IProduct {
-  addedInCart: IProduct[];
-  setSelectedProductsAtom: (item: IProduct[]) => void;
+  addedInCart?: IProduct[];
+  setSelectedProductsAtom?: (item: IProduct[]) => void;
+  style?: React.CSSProperties;
 }
 
 const ProductListItem: FC<ProductListItemProps> = ({
@@ -98,14 +99,17 @@ const ProductListItem: FC<ProductListItemProps> = ({
   price,
   addedInCart,
   setSelectedProductsAtom,
+  style,
 }) => {
   const priceString = price.toLocaleString("en-US", {
     style: "currency",
     currency: "NZD",
   });
 
+  const inCheckoutPage = !!addedInCart && !!setSelectedProductsAtom;
+
   return (
-    <Root>
+    <Root style={style}>
       <Image src={image} alt={name} />
       <InfoContainer>
         <Sku>{SKU}</Sku>
@@ -114,16 +118,18 @@ const ProductListItem: FC<ProductListItemProps> = ({
         <Price>{priceString}</Price>
       </InfoContainer>
       {/* //* Customer */}
-      <Xbutton
-        onClick={() => {
-          // alert("Remove?");
-          setSelectedProductsAtom([
-            ...addedInCart.filter((product) => product.SKU !== SKU),
-          ]); //* Remove item
-        }}
-      >
-        <p>❌</p>
-      </Xbutton>
+      {inCheckoutPage && (
+        <Xbutton
+          onClick={() => {
+            // alert("Remove?");
+            setSelectedProductsAtom([
+              ...addedInCart.filter((product) => product.SKU !== SKU),
+            ]); //* Remove item
+          }}
+        >
+          <p>❌</p>
+        </Xbutton>
+      )}
     </Root>
   );
 };

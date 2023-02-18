@@ -8,6 +8,7 @@ import {
   sortedBySKU,
 } from "../atoms";
 import CartHeader from "../components/CartHeader";
+import CheckoutItem from "../components/CheckoutItem";
 import ProductListItemAdmin from "../components/ProductListItemAdmin";
 
 const Root = styled.div`
@@ -86,20 +87,7 @@ const AdminPage: FC = () => {
         <CartList>
           <Title>Cart List</Title>
 
-          {!!carts &&
-            carts.map((item, index) => (
-              // <ProductListItemAdmin
-              //   image={item.image}
-              //   SKU={item.SKU}
-              //   name={item.name}
-              //   description={item.description}
-              //   price={item.price}
-              //   addedInCart={addedInCart}
-              //   // setAddedInCart={setAddedInCart}
-              //   key={index}
-              // />
-              <div>{JSON.stringify(item)}</div>
-            ))}
+          {!!carts && carts.map((item, index) => <CheckoutItem {...item} />)}
         </CartList>
       </div>
     </Root>

@@ -45,7 +45,7 @@ interface IUser {
   role: Role;
 }
 
-interface ICheckout {
+export interface ICheckout {
   selectedProducts: IProduct[];
   customerInfo: ICustomerInfo;
   totalPrice: number;
