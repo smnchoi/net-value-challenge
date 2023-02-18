@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { productsAtom } from "./atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authAtom, productsAtom } from "./atoms";
+import Header from "./components/Header";
 import AdminPage from "./routes/AdminPage";
 import CheckoutPage from "./routes/CheckoutPage";
 import ProductsPage from "./routes/ProductsPage";
@@ -10,6 +11,8 @@ import { productsParser } from "./utils/parser";
 
 function App() {
   const [products, setProducts] = useRecoilState(productsAtom);
+  const { isAuthenticated, user } = useRecoilValue(authAtom);
+  const role = user?.role;
 
   useEffect(() => {
     //* Fetch data only at the initial
@@ -27,12 +30,18 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<SignInPage />} />
-        <Route path="products" element={<ProductsPage />} />
-        <Route path="checkout" element={<CheckoutPage />} />
-        <Route path="admin" element={<AdminPage />} />
-      </Routes>
+      <Header />
+      {!isAuthenticated ? (
+        <Routes>
+          <Route path="/" element={<SignInPage />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/" element={<ProductsPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+          {role === "Admin" && <Route path="admin" element={<AdminPage />} />}
+        </Routes>
+      )}
     </Router>
   );
 }

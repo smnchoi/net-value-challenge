@@ -6,8 +6,8 @@ const { persistAtom } = recoilPersist();
 
 //* Store all products
 export const productsAtom = atom<IProduct[]>({
-  key: "productsAtom", // unique ID (with respect to other atoms/selectors)
-  default: [], // default value (aka initial value)
+  key: "productsAtom",
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });
 
@@ -28,8 +28,8 @@ export const sortedBySKU = selector({
 
 //* Store products that are selected by a user
 export const selctedProductsAtom = atom<IProduct[]>({
-  key: "selctedProductsAtom", // unique ID (with respect to other atoms/selectors)
-  default: [], // default value (aka initial value)
+  key: "selctedProductsAtom",
+  default: [],
 });
 
 interface ICustomerInfo {
@@ -53,14 +53,29 @@ export interface ICheckout {
 
 //* Store checkouts that are created by customer users
 export const checkoutsAtom = atom<ICheckout[]>({
-  key: "checkoutsAtom", // unique ID (with respect to other atoms/selectors)
-  default: [], // default value (aka initial value)
+  key: "checkoutsAtom",
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });
 
 //* Store all users customer and admin
 export const usersAtom = atom<IUser[]>({
-  key: "usersAtom", // unique ID (with respect to other atoms/selectors)
-  default: [], // default value (aka initial value)
+  key: "usersAtom",
+  default: [],
+  effects_UNSTABLE: [persistAtom],
+});
+
+interface IAuth {
+  isAuthenticated: boolean;
+  user: IUser | null;
+}
+
+//* Store all users customer and admin
+export const authAtom = atom<IAuth>({
+  key: "authAtom",
+  default: {
+    isAuthenticated: false,
+    user: null,
+  },
   effects_UNSTABLE: [persistAtom],
 });

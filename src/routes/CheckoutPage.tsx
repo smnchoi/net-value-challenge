@@ -138,7 +138,7 @@ const CheckoutPage: FC = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      <SubmitButton to="../products" onClick={handleCheckout}>
+      <SubmitButton to="../" onClick={handleCheckout}>
         Check Out Now! {totalPriceString}
       </SubmitButton>
     </Root>

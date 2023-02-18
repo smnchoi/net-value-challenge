@@ -36,16 +36,11 @@ const CreateOne = styled.a`
 const SignInPage: FC = () => {
   const [isSignIn, setIsSignIn] = useState(true);
 
-  //! TODO: find users data then sign-in
-  const handleSignIn = (username: string, password: string) => {
-    //
-  };
-
   return (
     <Root>
       {isSignIn ? (
         <>
-          <SignIn handleSignIn={handleSignIn} />
+          <SignIn />
           <Text>
             Don’t have an account?
             <CreateOne

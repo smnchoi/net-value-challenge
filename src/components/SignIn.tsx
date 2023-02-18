@@ -1,5 +1,7 @@
 import React, { FC, useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { authAtom, usersAtom } from "../atoms";
 import { validatePassword, validateUsername } from "../utils/validator";
 
 const Root = styled.div`
@@ -71,14 +73,14 @@ const ErrorMessage = styled.p<{ errorMessage: string }>`
   margin-bottom: 20px;
 `;
 
-interface SignInProps {
-  handleSignIn: (username: string, password: string) => void;
-}
-
-const SignIn: FC<SignInProps> = ({ handleSignIn }) => {
+const SignIn: FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const users = useRecoilValue(usersAtom);
+  const setAuth = useSetRecoilState(authAtom);
+  // console.log("users", users);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,7 +99,29 @@ const SignIn: FC<SignInProps> = ({ handleSignIn }) => {
       return;
     }
 
-    handleSignIn(username, password);
+    handleSignIn();
+  };
+
+  const handleSignIn = () => {
+    const isExisted = users.map((item) => item.username).includes(username);
+    //* User is not existed
+    if (!isExisted) {
+      window.alert("There is no user");
+      return;
+    }
+
+    const user = users.find((user) => user.username === username);
+    //* Incorrect password
+    if (user?.password !== password) {
+      window.alert("Password is not correct");
+      return;
+    }
+
+    //* Proceed sign-in
+    setAuth({
+      isAuthenticated: true,
+      user,
+    });
   };
 
   return (
