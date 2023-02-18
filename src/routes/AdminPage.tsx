@@ -54,8 +54,6 @@ const AdminPage: FC = () => {
   const [addedInCart, setAddedInCart] = useRecoilState(selctedProductsAtom);
   const carts = useRecoilValue(checkoutsAtom);
 
-  console.log("carts", carts);
-
   if (!products.length)
     return (
       <Root>

@@ -189,7 +189,6 @@ const ProductListItemAdmin: FC<ProductListItemAdminProps> = ({
 
     //* Push updated data
     removed.push(updatedProduct);
-    console.log("excepted.length", removed.length);
     const updatedProducts: IProduct[] = removed;
 
     //* Set updated data to Recoil

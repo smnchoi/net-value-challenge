@@ -130,7 +130,6 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
   const [role, setRole] = useState<Role>("Customer");
   const [users, setUser] = useRecoilState(usersAtom);
   const [auth, setAuth] = useRecoilState(authAtom);
-  console.log("auth", auth);
 
   const {
     register,
@@ -141,8 +140,6 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
 
   const handleSignUp = async (data: FormData) => {
     await new Promise((r) => setTimeout(r, 1000));
-
-    console.log("data", data);
 
     const { username, password } = data;
 
@@ -179,8 +176,6 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
     });
 
     setIsSignIn(true);
-
-    console.log("users", users);
   };
 
   return (
