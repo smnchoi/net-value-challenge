@@ -1,9 +1,9 @@
 import React, { FC, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { authAtom, usersAtom } from "../atoms";
 import { theme } from "../theme";
-import { validatePassword, validateUsername } from "../utils/validator";
 
 const Root = styled.div`
   display: flex;
@@ -68,42 +68,30 @@ const SubmitButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.p<{ errorMessage: string }>`
-  color: #d81e05;
-  color: ${({ errorMessage }) => (errorMessage ? "#d81e05" : "white")};
+const ErrorMessage = styled.p`
   margin-bottom: 20px;
+  color: #d81e05;
 `;
 
-const SignIn: FC = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+type FormData = {
+  username: string;
+  password: string;
+};
 
+const SignIn: FC = () => {
   const users = useRecoilValue(usersAtom);
   const setAuth = useSetRecoilState(authAtom);
   // console.log("users", users);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+  } = useForm<FormData>();
 
-    const isValidUsername = validateUsername(username);
-    if (!isValidUsername) {
-      setErrorMessage(
-        "Please use only lowercase letters and numbers for username"
-      );
-      return;
-    }
+  const handleSignIn = (data: FormData) => {
+    const { username, password } = data;
 
-    const isValidPassword = validatePassword(password);
-    if (!isValidPassword) {
-      setErrorMessage("Please use at least 6 characters for password");
-      return;
-    }
-
-    handleSignIn();
-  };
-
-  const handleSignIn = () => {
     const isExisted = users.map((item) => item.username).includes(username);
     //* User is not existed
     if (!isExisted) {
@@ -127,24 +115,43 @@ const SignIn: FC = () => {
 
   return (
     <Root>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(handleSignIn)}>
         <Container>
           <Title>Please Sign-In to proceed</Title>
-          <ErrorMessage errorMessage={errorMessage}>
-            {errorMessage || "_"}
+          <ErrorMessage>
+            {errors.username && errors.username.message}
+            <br />
+            {errors.password && errors.password.message}
           </ErrorMessage>
           <Input
             type="text"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            aria-invalid={
+              !isDirty ? undefined : errors.username ? "true" : "false"
+            }
+            {...register("username", {
+              required: "Please input the username",
+              pattern: {
+                value: /^[a-z0-9]+$/,
+                message:
+                  "Please use only lowercase letters and numbers for username.",
+              },
+            })}
           />
           <Input
             style={{ marginTop: 10 }}
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            aria-invalid={
+              !isDirty ? undefined : errors.password ? "true" : "false"
+            }
+            {...register("password", {
+              required: "Please input the password",
+              minLength: {
+                value: 6,
+                message: "Please use at least 6 characters for password.",
+              },
+            })}
           />
 
           <SubmitButton type="submit">Sign In</SubmitButton>

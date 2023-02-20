@@ -6,7 +6,6 @@ import { authAtom, usersAtom } from "../atoms";
 import { Mode } from "../routes/SignInPage";
 import { theme } from "../theme";
 import { Role } from "../utils/constant";
-import { validatePassword, validateUsername } from "../utils/validator";
 
 const Root = styled.div`
   display: flex;
