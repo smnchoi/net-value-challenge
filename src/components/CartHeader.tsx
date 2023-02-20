@@ -7,26 +7,28 @@ const Root = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px 20px 10px 20px;
+  margin-top: 20px;
   margin-bottom: 30px;
-  background-color: red;
+  background-color: black;
 `;
 
 const Checkout = styled(Link)`
-  font-size: 2rem;
+  font-size: 30px;
   font-weight: 900;
   color: white;
-  padding: 20px;
+  padding: 10px;
 
   &:hover {
-    background-color: #880000a7;
-    border-radius: 20px;
+    color: black;
+    background-color: white;
+    border-radius: 10px;
   }
 `;
 
 const SelectedCount = styled.p`
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 30px;
+  font-weight: 600;
   color: white;
 `;
 
@@ -41,9 +43,9 @@ const CartHeader: FC<CartHeaderProps> = ({ addedInCart }) => {
 
   return (
     <Root>
-      <SelectedCount>{`${addedInCart.length} added to Cart`}</SelectedCount>
+      <SelectedCount>{`Cart (+${addedInCart.length} 📦)`}</SelectedCount>
       <Checkout to="../checkout" onClick={goToCheckout}>
-        Checkout the cart
+        Checkout the Cart 🛒
       </Checkout>
     </Root>
   );

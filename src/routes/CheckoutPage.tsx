@@ -1,9 +1,11 @@
-import React, { FC, useState } from "react";
-import { Link } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import React, { FC, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, Route, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { checkoutsAtom, selctedProductsAtom } from "../atoms";
+import { authAtom, checkoutsAtom, selctedProductsAtom } from "../atoms";
 import ProductListItem from "../components/ProductListItem";
+import { theme } from "../theme";
 
 const Root = styled.div`
   display: flex;
@@ -13,12 +15,37 @@ const Root = styled.div`
   background-color: white;
 `;
 
-const Title = styled.body`
+const Title = styled.p`
   font-size: 40px;
   font-weight: 600;
   text-align: center;
-  padding-top: 30px;
+  padding-top: 100px;
   padding-bottom: 30px;
+`;
+
+const BackTo = styled(Link)`
+  font-size: 40px;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+
+  padding: 20px;
+
+  margin: 20px auto;
+  border-radius: 20px;
+
+  background-color: ${theme.red};
+  &:hover {
+    background-color: ${theme.redHover};
+  }
+`;
+
+const Container = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 40px 60px 40px;
 `;
 
 const Input = styled.input`
@@ -35,13 +62,24 @@ const Input = styled.input`
   }
 `;
 
-const SubmitButton = styled(Link)`
-  background-color: #ff0000;
+const ErrorMessage = styled.p`
+  margin-bottom: 20px;
+  margin-top: 60px;
+  color: #d81e05;
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+const SubmitButton = styled.input`
+  background-color: ${theme.red};
   border: none;
   color: #fff;
   padding: 20px;
+
   font-size: 30px;
+  font-weight: 900;
   text-align: center;
+
   border-radius: 4px;
   width: 100%;
   margin-top: 20px;
@@ -49,18 +87,30 @@ const SubmitButton = styled(Link)`
   transition: all 0.2s;
 
   &:hover {
-    background-color: #9d0303;
+    background-color: ${theme.redHover};
   }
 `;
 
-const CheckoutPage: FC = () => {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
+type FormData = {
+  firstname: string;
+  lastname: string;
+  email: string;
+};
 
+const CheckoutPage: FC = () => {
   const [addedInCart, setSelectedProductsAtom] =
     useRecoilState(selctedProductsAtom);
   const setCheckout = useSetRecoilState(checkoutsAtom);
+  const { user } = useRecoilValue(authAtom);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+    watch,
+  } = useForm<FormData>();
+
+  const navigate = useNavigate();
 
   const isEmpty = !addedInCart?.length;
 
@@ -74,7 +124,7 @@ const CheckoutPage: FC = () => {
   });
 
   const handleCheckout = () => {
-    //! TODO: Validating inputs
+    const { firstname, lastname, email } = watch();
 
     //* Add checkout
     setCheckout((otherCheckouts) => [
@@ -85,15 +135,18 @@ const CheckoutPage: FC = () => {
           firstname,
           lastname,
           email,
-          username: "username",
+          username: user ? user?.username : "USER",
         },
         totalPrice,
       },
     ]);
 
-    alert(
+    window.alert(
       "Products are checked out! You can see the information, if you are an Admin 🚀"
     );
+
+    //* Go back to products
+    navigate("/");
 
     //* Reset selectedProducts
     setSelectedProductsAtom([]);
@@ -104,44 +157,71 @@ const CheckoutPage: FC = () => {
       <Title>
         {isEmpty ? "Your Shopping Cart is Empty" : "List of Products"}
       </Title>
+      {isEmpty && <BackTo to="../" children="Back to Products Page" />}
 
-      {!isEmpty &&
-        addedInCart &&
-        addedInCart.map((item) => (
-          <ProductListItem
-            image={item.image}
-            SKU={item.SKU}
-            name={item.name}
-            description={item.description}
-            price={item.price}
-            addedInCart={addedInCart}
-            setSelectedProductsAtom={setSelectedProductsAtom}
+      {!isEmpty && (
+        <Container onSubmit={handleSubmit(handleCheckout)}>
+          {addedInCart &&
+            addedInCart.map((item, index) => (
+              <ProductListItem
+                {...item}
+                addedInCart={addedInCart}
+                setSelectedProductsAtom={setSelectedProductsAtom}
+                key={index}
+              />
+            ))}
+
+          <ErrorMessage>
+            {errors.firstname && errors.firstname.message}
+            <br />
+            {errors.lastname && errors.lastname.message}
+            <br />
+            {errors.email && errors.email.message}
+          </ErrorMessage>
+
+          <Input
+            type="text"
+            placeholder="First Name"
+            aria-invalid={
+              !isDirty ? undefined : errors.firstname ? "true" : "false"
+            }
+            {...register("firstname", {
+              required: "First Name is required",
+            })}
           />
-        ))}
 
-      <Input
-        type="text"
-        placeholder="First Name"
-        value={firstname}
-        onChange={(e) => setFirstname(e.target.value)}
-      />
+          <Input
+            type="text"
+            placeholder="Last Name"
+            aria-invalid={
+              !isDirty ? undefined : errors.lastname ? "true" : "false"
+            }
+            {...register("lastname", {
+              required: "Last Name is required",
+            })}
+          />
+          <Input
+            type="email"
+            placeholder="Email"
+            aria-invalid={
+              !isDirty ? undefined : errors.email ? "true" : "false"
+            }
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value:
+                  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                message: "Please use valid email address",
+              },
+            })}
+          />
 
-      <Input
-        type="text"
-        placeholder="Last Name"
-        value={lastname}
-        onChange={(e) => setLastname(e.target.value)}
-      />
-      <Input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <SubmitButton to="../products" onClick={handleCheckout}>
-        Check Out Now! {totalPriceString}
-      </SubmitButton>
+          <SubmitButton
+            type="submit"
+            value={`Check Out Now! ${totalPriceString}`}
+          />
+        </Container>
+      )}
     </Root>
   );
 };

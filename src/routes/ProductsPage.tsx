@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { productsAtom, selctedProductsAtom } from "../atoms";
+import { productsAtom, selctedProductsAtom, sortedBySKU } from "../atoms";
 import CartHeader from "../components/CartHeader";
 import ProductTile from "../components/ProductTile";
 import { IProduct, productsParser } from "../utils/parser";
@@ -25,10 +25,10 @@ const ProductsGrid = styled.div`
 `;
 
 const ProductsPage: FC = () => {
-  const products = useRecoilValue(productsAtom);
+  const sortedProducts = useRecoilValue(sortedBySKU);
   const [addedInCart, setAddedInCart] = useRecoilState(selctedProductsAtom);
 
-  if (!products.length)
+  if (!sortedProducts.length)
     return (
       <Root>
         <h1 style={{ alignSelf: "center", marginTop: 100 }}>
@@ -41,15 +41,12 @@ const ProductsPage: FC = () => {
     <Root>
       <CartHeader addedInCart={addedInCart} />
       <ProductsGrid>
-        {products.map((item) => (
+        {sortedProducts.map((item, index) => (
           <ProductTile
-            image={item.image}
-            SKU={item.SKU}
-            name={item.name}
-            description={item.description}
-            price={item.price}
+            {...item}
             addedInCart={addedInCart}
             setAddedInCart={setAddedInCart}
+            key={index}
           />
         ))}
       </ProductsGrid>

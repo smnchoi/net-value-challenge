@@ -1,7 +1,11 @@
 import React, { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { authAtom, usersAtom } from "../atoms";
+import { Mode } from "../routes/SignInPage";
+import { theme } from "../theme";
 import { Role } from "../utils/constant";
-import { validatePassword, validateUsername } from "../utils/validator";
 
 const Root = styled.div`
   display: flex;
@@ -27,7 +31,7 @@ const Container = styled.div`
   padding: 0px 20px 20px 20px;
 `;
 
-const Title = styled.body`
+const Title = styled.p`
   font-size: 40px;
   font-weight: 600;
   text-align: center;
@@ -35,7 +39,7 @@ const Title = styled.body`
   padding-bottom: 30px;
 `;
 
-const Detail = styled.body`
+const Detail = styled.p`
   text-align: left;
   margin-top: 26px;
   margin-left: 10px;
@@ -68,16 +72,16 @@ const Box = styled.button<{ isSelected: boolean }>`
   width: 200px;
   height: 80px;
   background-color: ${({ isSelected }) =>
-    isSelected ? "#ff0000" : " #cacaca"};
+    isSelected ? theme.red : " #e8e8e8"};
   border-radius: 10px;
   border: none;
 
   &:hover {
     background-color: ${({ isSelected }) =>
-      isSelected ? "#9d0303" : " #9c9a9a"};
+      isSelected ? theme.redHover : " #9c9a9a"};
   }
 
-  body {
+  p {
     font-size: 20px;
     font-weight: 600;
     color: #000000;
@@ -85,7 +89,7 @@ const Box = styled.button<{ isSelected: boolean }>`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #ff0000;
+  background-color: ${theme.red};
   border: none;
   color: #fff;
   padding: 14px;
@@ -97,89 +101,150 @@ const SubmitButton = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    background-color: #9d0303;
+    background-color: ${theme.redHover};
   }
 `;
 
-const ErrorMessage = styled.p<{ errorMessage: string }>`
-  color: #d81e05;
-  color: ${({ errorMessage }) => (errorMessage ? "#d81e05" : "white")};
+const GoToSignInButton = styled(SubmitButton)`
+  background-color: #000000;
+
+  &:hover {
+    background-color: #565656;
+  }
+`;
+
+const ErrorMessage = styled.p`
+  margin-top: 60px;
   margin-bottom: 20px;
+  color: #d81e05;
 `;
 
 interface SignInProps {
-  handleSignUp: (username: string, password: string, role: Role) => void;
+  setMode: (mode: Mode) => void;
 }
 
-const SignUp: FC<SignInProps> = ({ handleSignUp }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+type FormData = {
+  username: string;
+  password: string;
+};
+
+const SignUp: FC<SignInProps> = ({ setMode }) => {
   const [role, setRole] = useState<Role>("Customer");
+  const [users, setUser] = useRecoilState(usersAtom);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isDirty, isSubmitting },
+  } = useForm<FormData>();
 
-    const isValidUsername = validateUsername(username);
-    if (!isValidUsername) {
-      setErrorMessage(
-        "Please use only lowercase letters and numbers for username"
-      );
+  const handleSignUp = async (data: FormData) => {
+    await new Promise((r) => setTimeout(r, 500));
+
+    const { username, password } = data;
+
+    const alreadyExisted = users
+      .map((user) => user.username)
+      .includes(username);
+
+    if (alreadyExisted) {
+      alert("User already exists");
+      setValue("username", "");
+      setValue("password", "");
       return;
     }
 
-    const isValidPassword = validatePassword(password);
-    if (!isValidPassword) {
-      setErrorMessage("Please use at least 6 characters for password");
-      return;
-    }
+    window.alert("User is created! Please Sign-In");
 
-    handleSignUp(username, password, role);
+    //* create user and store at Recoil state
+    setUser((otherUsers) => [
+      ...otherUsers,
+      {
+        username,
+        password,
+        role,
+      },
+    ]);
+
+    setMode("Sign-in");
   };
 
   return (
     <Root>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(handleSignUp)}>
         <Container>
           <Title>Sign Up</Title>
-          <ErrorMessage errorMessage={errorMessage}>
-            {errorMessage || "_"}
+          <ErrorMessage>
+            {errors.username && errors.username.message}
+            <br />
+            {errors.password && errors.password.message}
           </ErrorMessage>
           <Input
             type="text"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            aria-invalid={
+              !isDirty ? undefined : errors.username ? "true" : "false"
+            }
+            {...register("username", {
+              required: "Username is required",
+              pattern: {
+                value: /^[a-z0-9]+$/,
+                message:
+                  "Please use only lowercase letters and numbers for username.",
+              },
+            })}
           />
           <Input
             style={{ marginTop: 10 }}
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            aria-invalid={
+              !isDirty ? undefined : errors.password ? "true" : "false"
+            }
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Please use at least 6 characters for password.",
+              },
+            })}
           />
 
           <Detail>Select the role</Detail>
           <Row style={{ marginTop: 20 }}>
             <Box
+              type="button"
               onClick={() => {
                 setRole("Admin");
               }}
               isSelected={role === "Admin"}
             >
-              <body>Admin</body>
+              <p>Admin</p>
             </Box>
             <Box
+              type="button"
               onClick={() => {
                 setRole("Customer");
               }}
               isSelected={role === "Customer"}
             >
-              <body>Customer</body>
+              <p>Customer</p>
             </Box>
           </Row>
 
-          <SubmitButton type="submit">Sign Up</SubmitButton>
+          <SubmitButton type="submit" disabled={isSubmitting}>
+            Confirm Sign Up
+          </SubmitButton>
+          <GoToSignInButton
+            type="submit"
+            disabled={isSubmitting}
+            onClick={() => {
+              setMode("Sign-in");
+            }}
+          >
+            Go to Sign-In
+          </GoToSignInButton>
         </Container>
       </Form>
     </Root>

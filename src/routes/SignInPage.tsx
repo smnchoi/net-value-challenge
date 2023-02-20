@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
-import { Role } from "../utils/constant";
 
 const Root = styled.div`
   display: flex;
@@ -33,29 +32,21 @@ const CreateOne = styled.a`
   }
 `;
 
+export type Mode = "Sign-in" | "Sign-up";
+
 const SignInPage: FC = () => {
-  const [isSignIn, setIsSignIn] = useState(true);
-
-  //! TODO: find users data then sign-in
-  const handleSignIn = (username: string, password: string) => {
-    //
-  };
-
-  //! TODO: create user and store at Recoil state
-  const handleSignUp = (username: string, password: string, role: Role) => {
-    //
-  };
+  const [mode, setMode] = useState<Mode>("Sign-in");
 
   return (
     <Root>
-      {isSignIn ? (
+      {mode === "Sign-in" ? (
         <>
-          <SignIn handleSignIn={handleSignIn} />
+          <SignIn />
           <Text>
             Don’t have an account?
             <CreateOne
               onClick={() => {
-                setIsSignIn(false);
+                setMode("Sign-up");
               }}
             >
               Create one
@@ -63,7 +54,7 @@ const SignInPage: FC = () => {
           </Text>
         </>
       ) : (
-        <SignUp handleSignUp={handleSignUp} />
+        <SignUp setMode={setMode} />
       )}
     </Root>
   );
