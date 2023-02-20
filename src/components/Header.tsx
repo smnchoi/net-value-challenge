@@ -1,15 +1,24 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { authAtom } from "../atoms";
+import logo from "../images/nowherehouse_logo.png";
+import { theme } from "../theme";
 
 const Root = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background-color: red;
+  background-color: ${theme.white};
+`;
+
+const Row = styled(Root)`
+  background-color: ${theme.red};
+  flex-direction: row;
+  width: 100%;
+  padding: 10px 20px 10px 20px;
 `;
 
 const Title = styled.div`
@@ -19,19 +28,30 @@ const Title = styled.div`
 `;
 
 const SingOut = styled(Link)`
-  font-size: 2rem;
+  font-size: 30px;
   font-weight: 900;
+  padding: 10px;
   color: white;
-  padding: 20px;
 
   &:hover {
     background-color: #880000a7;
-    border-radius: 20px;
+    border-radius: 10px;
   }
 `;
 
 const GoToAdmin = styled(SingOut)`
   /*  */
+`;
+
+const GoTo = styled(SingOut)`
+  font-size: 20px;
+  font-weight: 500;
+`;
+
+const Logo = styled.img`
+  width: auto;
+  height: 80px;
+  background-color: black;
 `;
 
 type HeaderProps = {};
@@ -41,6 +61,9 @@ const Header: FC<HeaderProps> = () => {
   const { isAuthenticated, user } = auth;
   const role = user?.role;
   const username = user?.username;
+
+  const { pathname } = useLocation();
+  console.log("pathname", pathname);
 
   const handleSignOut = () => {
     if (!window.confirm("Do you want to sign out?")) {
@@ -53,21 +76,32 @@ const Header: FC<HeaderProps> = () => {
     });
   };
 
+  const isAdmin = role === "Admin";
+
   return (
     <Root>
-      <Title
-        children={
-          isAuthenticated
-            ? `Hi ${username} #${role}`
-            : "Welcome to Nowherehouse"
-        }
-      />
-      {role === "Admin" && (
-        <GoToAdmin children="Go To Admin Page" to="../admin" />
-      )}
+      <Row>
+        <Title
+          children={
+            isAuthenticated
+              ? `Hi ${username} #${role}`
+              : "Welcome to Nowherehouse"
+          }
+        />
+
+        <Logo src={logo} />
+
+        {isAuthenticated && (
+          <SingOut children="Sign Out" to="../" onClick={handleSignOut} />
+        )}
+      </Row>
 
       {isAuthenticated && (
-        <SingOut children="Sign Out" to="../" onClick={handleSignOut} />
+        <Row style={{ marginTop: 2 }}>
+          <GoTo children="Products" to="../" />
+          {isAdmin && <GoTo children="Admin" to="../admin" />}
+          <GoTo children="Checkout" to="../checkout" />
+        </Row>
       )}
     </Root>
   );
