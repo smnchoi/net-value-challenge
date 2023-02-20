@@ -93,7 +93,7 @@ const EditButton = styled.button`
   flex-direction: row;
   width: 100px;
   height: 100%;
-  background-color: #ccc;
+  background-color: lightgray;
   margin-left: auto;
 
   justify-content: center;

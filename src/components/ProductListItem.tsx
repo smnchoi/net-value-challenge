@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
+import { theme } from "../theme";
 import { IProduct } from "../utils/parser";
 
 const Root = styled.div`
@@ -8,9 +9,9 @@ const Root = styled.div`
   width: 100%;
   height: 200px;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid;
   border-radius: 4px;
-  border-color: #ccc;
+  border-color: black;
   border-width: 2px;
   overflow: hidden;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
@@ -68,7 +69,7 @@ const Xbutton = styled.a`
   flex-direction: row;
   width: 60px;
   height: 100%;
-  background-color: #ccc;
+  background-color: black;
   margin-left: auto;
 
   justify-content: center;

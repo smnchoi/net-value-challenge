@@ -65,12 +65,10 @@ const AdminPage: FC = () => {
 
   return (
     <Root>
-      <CartHeader addedInCart={addedInCart} />
-
       <div
         style={{
-          flexDirection: "row",
           display: "flex",
+          flexDirection: "row",
         }}
       >
         <ProductList>

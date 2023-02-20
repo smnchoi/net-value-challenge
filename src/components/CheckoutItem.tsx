@@ -7,8 +7,8 @@ const Root = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: white;
+  border: 1px solid;
   border-radius: 4px;
   border-color: black;
   border-width: 2px;
@@ -70,8 +70,9 @@ const OpenButton = styled.button`
   flex-direction: row;
   width: 100px;
   height: 100%;
-  background-color: #ccc;
   margin-left: auto;
+  padding: 10px 0px 10px 0px;
+  background-color: #00a6ff92;
 
   justify-content: center;
   align-items: center;
@@ -81,9 +82,6 @@ const OpenButton = styled.button`
     font-size: 30px;
     border-radius: 50px;
   }
-
-  padding: 10px 0px 10px 0px;
-  background-color: #00a6ff92;
 
   &:hover {
     background-color: #00a6ff;

@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { authAtom, checkoutsAtom, selctedProductsAtom } from "../atoms";
 import ProductListItem from "../components/ProductListItem";
+import { theme } from "../theme";
 
 const Root = styled.div`
   display: flex;
@@ -33,9 +34,9 @@ const BackTo = styled(Link)`
   margin: 20px auto;
   border-radius: 20px;
 
-  background-color: #ff0000;
+  background-color: ${theme.red};
   &:hover {
-    background-color: #9d0303;
+    background-color: ${theme.redHover};
   }
 `;
 
@@ -70,7 +71,7 @@ const ErrorMessage = styled.p`
 `;
 
 const SubmitButton = styled.input`
-  background-color: #ff0000;
+  background-color: ${theme.red};
   border: none;
   color: #fff;
   padding: 20px;
@@ -86,7 +87,7 @@ const SubmitButton = styled.input`
   transition: all 0.2s;
 
   &:hover {
-    background-color: #9d0303;
+    background-color: ${theme.redHover};
   }
 `;
 
@@ -156,7 +157,7 @@ const CheckoutPage: FC = () => {
       <Title>
         {isEmpty ? "Your Shopping Cart is Empty" : "List of Products"}
       </Title>
-      {isEmpty && <BackTo to="../" children="Back to products page" />}
+      {isEmpty && <BackTo to="../" children="Back to Products Page" />}
 
       {!isEmpty && (
         <Container onSubmit={handleSubmit(handleCheckout)}>

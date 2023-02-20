@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { authAtom, usersAtom } from "../atoms";
+import { theme } from "../theme";
 import { validatePassword, validateUsername } from "../utils/validator";
 
 const Root = styled.div`
@@ -51,7 +52,7 @@ const Input = styled.input`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #ff0000;
+  background-color: ${theme.red};
   border: none;
   color: #fff;
   padding: 14px;
@@ -63,7 +64,7 @@ const SubmitButton = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    background-color: #9d0303;
+    background-color: ${theme.redHover};
   }
 `;
 

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { authAtom, usersAtom } from "../atoms";
+import { theme } from "../theme";
 import { Role } from "../utils/constant";
 import { validatePassword, validateUsername } from "../utils/validator";
 
@@ -71,13 +72,13 @@ const Box = styled.button<{ isSelected: boolean }>`
   width: 200px;
   height: 80px;
   background-color: ${({ isSelected }) =>
-    isSelected ? "#ff0000" : " #e8e8e8"};
+    isSelected ? theme.red : " #e8e8e8"};
   border-radius: 10px;
   border: none;
 
   &:hover {
     background-color: ${({ isSelected }) =>
-      isSelected ? "#9d0303" : " #9c9a9a"};
+      isSelected ? theme.redHover : " #9c9a9a"};
   }
 
   p {
@@ -88,7 +89,7 @@ const Box = styled.button<{ isSelected: boolean }>`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #ff0000;
+  background-color: ${theme.red};
   border: none;
   color: #fff;
   padding: 14px;
@@ -100,7 +101,7 @@ const SubmitButton = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    background-color: #9d0303;
+    background-color: ${theme.redHover};
   }
 `;
 
@@ -115,12 +116,7 @@ const GoToSignInButton = styled(SubmitButton)`
 const ErrorMessage = styled.p`
   margin-top: 60px;
   margin-bottom: 20px;
-
-  p {
-    color: #d81e05;
-    font-size: 40px;
-    text-align: left;
-  }
+  color: #d81e05;
 `;
 
 interface SignInProps {

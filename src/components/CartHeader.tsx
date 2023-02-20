@@ -14,21 +14,21 @@ const Root = styled.div`
 `;
 
 const Checkout = styled(Link)`
-  font-size: 2rem;
+  font-size: 30px;
   font-weight: 900;
   color: white;
-  padding: 20px;
+  padding: 10px;
 
   &:hover {
     color: black;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 10px;
   }
 `;
 
 const SelectedCount = styled.p`
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 30px;
+  font-weight: 600;
   color: white;
 `;
 
@@ -43,7 +43,7 @@ const CartHeader: FC<CartHeaderProps> = ({ addedInCart }) => {
 
   return (
     <Root>
-      <SelectedCount>{`Cart (+${addedInCart.length} 🎁)`}</SelectedCount>
+      <SelectedCount>{`Cart (+${addedInCart.length} 📦)`}</SelectedCount>
       <Checkout to="../checkout" onClick={goToCheckout}>
         Checkout the Cart 🛒
       </Checkout>
