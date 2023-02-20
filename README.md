@@ -1,46 +1,59 @@
-# Getting Started with Create React App
+# You can see the project here! 
+https://net-value-challenge.vercel.app/
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br />
+<br />
 
-## Available Scripts
+# How to inspect the project
 
-In the project directory, you can run:
+**1. 
+You have to sign in to see all features.**
+<br />
+<img width="687" alt="image" src="https://user-images.githubusercontent.com/70505699/219999321-45a58c6d-fa39-4fb3-9e76-9bf4b4e8e4ea.png">
 
-### `yarn start`
+<br />
+<br />
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**2. You can sign up as an Admin or Customer.** 
+<br />
+![image](https://user-images.githubusercontent.com/70505699/219999972-63b4252c-d75c-450c-9d06-0bce5c0606b3.png) 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<img width="673" alt="image" src="https://user-images.githubusercontent.com/70505699/220002025-2ad04e22-5f25-424b-bf38-ee4a1d80de8a.png">
 
-### `yarn test`
+- If you sign in as an Admin, you can access to ```/admin``` page for managing products and customer cart lists.
+- If you sign in as a Customer, you can just select and add products to the cart and then checkout.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<br />
+<br />
 
-### `yarn build`
+**3-1. These page is for Admin users.** 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![image](https://user-images.githubusercontent.com/70505699/220003964-307abf4d-348b-4875-b73a-d9cd909481b9.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+<br />
+<br />
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**3-2. These pages are for Customer users.** <br />
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![image](https://user-images.githubusercontent.com/70505699/220000243-963efe4b-73f6-4561-be3a-6f3c769ce4ce.png)
+<img width="1074" alt="image" src="https://user-images.githubusercontent.com/70505699/220000301-5880123a-7442-4184-b833-895024e2dca6.png">
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+---
+<br />
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# Used Tech Stacks:
+- React
+- Styled Components
+- Recoil
+- React-testing-library
+- React Router DOM
+- Typescript
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<br />
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Disclaimer
+- In this project, there is no any external database. The data are stored in browser cahce only. if you clean the browser cache, the app will be initialised.
+- The UI design is inspired by [thewarehouse](https://www.thewarehouse.co.nz/c/electronics-gaming)
