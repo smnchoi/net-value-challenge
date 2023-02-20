@@ -140,7 +140,7 @@ const SignUp: FC<SignInProps> = ({ setMode }) => {
   } = useForm<FormData>();
 
   const handleSignUp = async (data: FormData) => {
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 500));
 
     const { username, password } = data;
 

@@ -85,7 +85,7 @@ const Header: FC<HeaderProps> = () => {
           children={
             isAuthenticated
               ? `Hi ${username} #${role}`
-              : "Welcome to Nowherehouse"
+              : "Welcome to noWherehouse"
           }
         />
 
