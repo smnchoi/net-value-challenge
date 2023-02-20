@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { authAtom, usersAtom } from "../atoms";
+import { Mode } from "../routes/SignInPage";
 import { theme } from "../theme";
 import { Role } from "../utils/constant";
 import { validatePassword, validateUsername } from "../utils/validator";
@@ -120,7 +121,7 @@ const ErrorMessage = styled.p`
 `;
 
 interface SignInProps {
-  setIsSignIn: (signIn: boolean) => void;
+  setMode: (mode: Mode) => void;
 }
 
 type FormData = {
@@ -128,10 +129,9 @@ type FormData = {
   password: string;
 };
 
-const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
+const SignUp: FC<SignInProps> = ({ setMode }) => {
   const [role, setRole] = useState<Role>("Customer");
   const [users, setUser] = useRecoilState(usersAtom);
-  const [auth, setAuth] = useRecoilState(authAtom);
 
   const {
     register,
@@ -168,7 +168,7 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
       },
     ]);
 
-    setIsSignIn(true);
+    setMode("Sign-in");
   };
 
   return (
@@ -241,7 +241,7 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
             type="submit"
             disabled={isSubmitting}
             onClick={() => {
-              setIsSignIn(true);
+              setMode("Sign-in");
             }}
           >
             Go to Sign-In
