@@ -168,15 +168,6 @@ const SignUp: FC<SignInProps> = ({ setIsSignIn }) => {
       },
     ]);
 
-    setAuth({
-      isAuthenticated: true,
-      user: {
-        username,
-        password,
-        role,
-      },
-    });
-
     setIsSignIn(true);
   };
 
